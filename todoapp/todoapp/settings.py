@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'app'
+    'app',
+    'django_google_fonts',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,5 @@ AUTH_USER_MODEL = 'users.CustomUser'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+GOOGLE_FONTS = ["Kablammo", "Roboto"]

@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление поста</title>
+    <link rel="stylesheet" href="{% static 'app/css/home_page.css' %}">
+    <link rel="stylesheet" href="{% static 'app/fonts/font.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <ul class='third-ul'>
+                <li><a class='last-link' href="#"><img src="{% static 'app/images/logo.jpg' %}" alt="..." width="60px"
+                    height="60px"></a></li>
+            </ul>
+            <ul class='first-ul'>
+                <li class='direct'><a href="{% url 'home_page' %}">Главная страница</a></li>
+                <li class='direct'><a href="#">Завершенные задачи</a></li>
+                <li><a href="{% url 'add_post' %}">Создать задачу</a></li>
+            </ul>
+            {% if not user.is_authenticated %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="#">Войти</a></li>
+            </ul>
+            {% else %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="#">{{ user.username }}</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+        <div class="div-form">
+            <form action="{% url 'add_post' %}"  method='post' enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{ form.none_fields_error }}
+
+                {% for f in form %}
+                <p><label id='{{ f.id_for_label }}'>{{ f.label }}</label><br>{{ f }}</p>
+                {% endfor %}
+                <button type='submit'>Создать</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

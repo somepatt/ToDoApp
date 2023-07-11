@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="{% static 'app/css/home_page.css' %}">
+    <link rel="stylesheet" href="{% static 'app/fonts/font.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <ul class='third-ul'>
+                <li><a class='last-link' href="#"><img src="{% static 'app/images/logo.jpg' %}" alt="..." width="60px"
+                    height="60px"></a></li>
+            </ul>
+            <ul class='first-ul'>
+                <li class='direct'><a href="{% url 'home_page' %}">Главная страница</a></li>
+                <li class='direct'><a href="#">Завершенные задачи</a></li>
+                <li><a href="{% url 'add_post' %}">Создать задачу</a></li>
+            </ul>
+            {% if not user.is_authenticated %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="#">Войти</a></li>
+            </ul>
+            {% else %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="#">{{ user.username }}</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+        <div class="content-block">
+            {% for p in posts %}
+            {% if p.header_image %}
+            <div class="content-img">
+                <a href="#"><img src="{% static 'app/images/bmw-m8.jpg' %}" alt="..." width="250px" height="250px"></a>
+            </div>
+            {% endif %}
+            <div class='content-text'>
+                <a href=""><p class="title">{{ p.title }}</p></a>
+                <p class="description">{{ p.body }}</p>
+                <div class="pre-last-data">
+                    <div class="last-data">
+                        <p class="data">{{ p.date_create }}</p>
+                        <p class="author">{{ p.author }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

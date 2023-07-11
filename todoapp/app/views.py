@@ -29,3 +29,11 @@ class AddPost(CreateView):
     form_class = AddPostForm
     template_name = 'add_post.html'
     success_url = reverse_lazy('home_page')           #на страницу поста
+
+    def post(self, request):
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.cleaned_data['author'] = request.user
+            Post.objects.create(**form.cleaned_data)
+            return redirect('home_page')
+        return redirect('add_post')

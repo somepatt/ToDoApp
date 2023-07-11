@@ -5,14 +5,14 @@ from autoslug import AutoSlugField
 class Comment(models.Model):
     author = models.ForeignKey('users.CustomUser', null=False, on_delete=models.CASCADE)
     body = models.CharField(max_length=255, null=False)
-    like = models.ManyToManyField("app.Model", null=True)
+    like = models.ManyToManyField("users.CustomUser", related_name='like_comment')
     date_create = models.DateTimeField()
 
 class Post(models.Model):
     author = models.ForeignKey('users.CustomUser', null=False, on_delete=models.CASCADE)
     title = models.CharField(max_length=155, null=False)
     body = models.TextField(null=True)
-    like = models.ManyToManyField("app.Model", null=True)
+    like = models.ManyToManyField("users.CustomUser", related_name='like_post')
     header_image = models.ImageField(upload_to='media/', null=True, blank=True)
     comments = models.ForeignKey(Comment, null=True, blank=True, on_delete=models.CASCADE)
     date_create = models.DateTimeField(auto_now_add=True)
