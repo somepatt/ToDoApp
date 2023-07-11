@@ -1,0 +1,4 @@
+.env
+venv/
+*.cpython-311.pyc
+/migrations/
