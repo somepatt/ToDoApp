@@ -33,7 +33,7 @@
         <div class="div-form">
             <form action="{% url 'add_post' %}"  method='post' enctype='multipart/form-data'>
                 {% csrf_token %}
-                {{ form.none_fields_error }}
+                {{ form.non_field_errors }}
 
                 {% for f in form %}
                 <p><label id='{{ f.id_for_label }}'>{{ f.label }}</label><br>{{ f }}</p>

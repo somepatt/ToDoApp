@@ -22,11 +22,11 @@
             </ul>
             {% if not user.is_authenticated %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="#">Войти</a></li>
+                <li><a class='last-link' href="{% url 'login_url' %}">Войти</a></li>
             </ul>
             {% else %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="#">{{ user.username }}</a></li>
+                <li><a class='last-link' href="{% url 'profile_url' customuser.slug %}">{{ user.username }}</a></li>
             </ul>
             {% endif %}
         </nav>

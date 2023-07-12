@@ -1,4 +1,6 @@
 .env
 venv/
 *.cpython-311.pyc
-/migrations/
+*[0-9][0-9][0-9][0-9]_initial.py
+*media/
+*.jpg

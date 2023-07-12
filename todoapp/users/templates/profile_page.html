@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ customuser.username }}</title>
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'users/fonts/font.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <ul class='third-ul'>
+                <li><a class='last-link' href="#"><img src="{% static 'app/images/logo.jpg' %}" alt="..." width="60px"
+                    height="60px"></a></li>
+            </ul>
+            <ul class='first-ul'>
+                <li class='direct'><a href="{% url 'home_page' %}">Главная страница</a></li>
+                <li class='direct'><a href="#">Завершенные задачи</a></li>
+                <li><a href="{% url 'add_post' %}">Создать задачу</a></li>
+            </ul>
+            {% if not user.is_authenticated %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="#">Войти</a></li>
+            </ul>
+            {% else %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="#">{{ user.username }}</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+        <div class="content-block">
+            {% if customuser.head_image %}
+                <div class="avatar">
+                    <img src={{ customuser.head_image.url }} alt="...">
+                </div>
+            {% else %}
+                <div class="avatar">
+                    <img src="{% static 'users/images/non-auth.png' %}" alt="...">
+                </div>
+            {% endif %}
+            <div class="information">
+                <p class="username">{{ customuser.username }}</p>
+                {% if customuser.bio %}
+                    <p class="bio">{{ customuser.bio }}</p>
+                {% else %}
+                    <p class="bio">Not bio yet.</p>
+                {% endif %}
+                <p class="date_j">{{ customuser.date_joined }}</p>
+                {% if customuser.date_b %}
+                    <p class="date_b">{{ customuser.date_b }}</p>
+                {% endif %}
+                <a href="{% url 'update_profile_url' customuser.slug %}">Редактировать профиль</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

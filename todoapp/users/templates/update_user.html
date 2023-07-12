@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='{% static "users/css/login.css" %}'>
+    <link rel="stylesheet" href="{% static 'users/fonts/font.css' %}">
+    <title>Редактирование профиля</title>
+</head>
+<body>
+    <div class="container">
+        <form method='post' enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ form.non_field_error }}
+            {% for f in form %}
+            {% if not forloop.last %}
+            <p><label id='{{ f.id_for_label }}'>{{ f.label }}</label><br>{{ f }}</p>
+            {{ f.add_error }}
+            {% endif %}
+            {% endfor %}
+            <button type='submit'>Сохранить</button>
+        </form>
+    </div>
+</body>
+</html>

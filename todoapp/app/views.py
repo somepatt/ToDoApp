@@ -10,6 +10,12 @@ class HomePage(ListView):
     template_name = 'home_page.html'
     context_object_name = 'posts'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["customuser"] = self.request.user
+        return context
+    
+
     def get_queryset(self):
         return Post.objects.filter(is_published=True)
 
