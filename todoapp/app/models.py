@@ -6,7 +6,8 @@ class Comment(models.Model):
     author = models.ForeignKey('users.CustomUser', null=False, on_delete=models.CASCADE)
     body = models.CharField(max_length=255, null=False)
     like = models.ManyToManyField("users.CustomUser", related_name='like_comment')
-    date_create = models.DateTimeField()
+    date_create = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
 
 class Post(models.Model):
     author = models.ForeignKey('users.CustomUser', null=False, on_delete=models.CASCADE)
@@ -14,7 +15,6 @@ class Post(models.Model):
     body = models.TextField(null=True)
     like = models.ManyToManyField("users.CustomUser", related_name='like_post')
     header_image = models.ImageField(upload_to='media/', null=True, blank=True)
-    comments = models.ForeignKey(Comment, null=True, blank=True, on_delete=models.CASCADE)
     date_create = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField()

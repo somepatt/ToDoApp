@@ -10,3 +10,11 @@ class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('header_image', 'title', 'body', 'is_published')
+
+
+class AddCommentForm(forms.ModelForm):
+    body = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Введите комментарий'}))
+
+    class Meta:
+        model = Comment
+        fields = ('body', )

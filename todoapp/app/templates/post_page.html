@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'users/fonts/font.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <ul class='third-ul'>
+                <li><a class='last-link' href="#"><img src="{% static 'app/images/logo.jpg' %}" alt="..." width="60px"
+                    height="60px"></a></li>
+            </ul>
+            <ul class='first-ul'>
+                <li class='direct'><a href="{% url 'home_page' %}">Главная страница</a></li>
+                <li class='direct'><a href="#">Завершенные задачи</a></li>
+                <li><a href="{% url 'add_post' %}">Создать задачу</a></li>
+            </ul>
+            {% if not user.is_authenticated %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="{% url 'login_url' %}">Войти</a></li>
+            </ul>
+            {% else %}
+            <ul class='second-ul'>
+                <li><a class='last-link' href="{% url 'profile_url' customuser.slug %}">{{ user.username }}</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+        <div class="content-block">
+            {% if post.header_image %}
+                <div class="avatar">
+                    <img src={{ post.header_image.url }} alt="...">
+                </div>
+            {% endif %}
+            <div class="information">
+                <p class="username">{{ post.title }}</p>
+                {% if post.body %}
+                    <p class="bio">{{ post.body }}</p>
+                {% else %}
+                    <p class="bio"></p>
+                {% endif %}
+                <p class="date_j">Дата создания: {{ post.date_create }}</p>
+                <p class="date_j">Дата обновления:{{ post.date_update }}</p>
+                <p class="date_b">Автор: {{ post.author }}</p>
+                <br>
+                <a href="{% url 'update_post_url' post.slug %}">Редактировать</a>
+                <a href="{% url 'delete_post_url' post.slug %}">Удалить</a>
+                <form action='{% url "like_post_url" post.slug %}' method='post'>
+                    {% csrf_token %}
+                    <button type='submit'>Лайк {{ post.like.count }}</button>
+                </form>
+            </div>
+            
+        </div>
+        <form action='{% url "post_url" post.slug %}' method='post'>
+            {% csrf_token %}
+            <p><label id='{{ form.body.id_for_label }}'></label>{{ form.body }}</p>
+            <button type='submit'>Отправить</button>
+        </form>
+        <div class='comments'>
+            {% if not post.comments.all %}
+                <p>Not comments else!</p>
+            {% else %}
+                {% for c in post.comments.all %}
+                <p>Автор {{ c.author }}</p>
+                <p>{{ c.body }}</p>
+                <p>{{ c.date_create }}</p>
+                <hr>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
