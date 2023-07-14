@@ -2,6 +2,8 @@ from django.urls import path
 
 from .views import *
 
+app_name = 'users'
+
 url_users_pattern = [
     path('login/', LoginUser.as_view(), name='login_url'),
     path('logout/', LogoutView.as_view(), name='logout_url'),

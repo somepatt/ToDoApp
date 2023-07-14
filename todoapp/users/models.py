@@ -14,5 +14,5 @@ class CustomUser(AbstractUser):
         return self.username
     
     def get_absolute_url(self):
-        return reverse("profile_url", kwargs={"user_slug": self.slug})
+        return reverse("users:profile_url", kwargs={"user_slug": self.slug})
     

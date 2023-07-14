@@ -16,17 +16,17 @@
                     height="60px"></a></li>
             </ul>
             <ul class='first-ul'>
-                <li class='direct'><a href="{% url 'home_page' %}">Главная страница</a></li>
+                <li class='direct'><a href="{% url 'app:home_page' %}">Главная страница</a></li>
                 <li class='direct'><a href="#">Завершенные задачи</a></li>
-                <li><a href="{% url 'add_post' %}">Создать задачу</a></li>
+                <li><a href="{% url 'app:add_post' %}">Создать задачу</a></li>
             </ul>
             {% if not user.is_authenticated %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="{% url 'login_url' %}">Войти</a></li>
+                <li><a class='last-link' href="{% url 'users:login_url' %}">Войти</a></li>
             </ul>
             {% else %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="{% url 'profile_url' customuser.slug %}">{{ user.username }}</a></li>
+                <li><a class='last-link' href="{% url 'users:profile_url' customuser.slug %}">{{ user.username }}</a></li>
             </ul>
             {% endif %}
         </nav>
@@ -34,11 +34,11 @@
         <div class="content-block">            
                 {% if p.header_image %}
                 <div class="content-img">
-                    <a href="{% url 'post_url' p.slug %}"><img src="{{ p.header_image.url }}" alt="..." width="250px" height="250px"></a>
+                    <a href="{% url 'app:post_url' p.slug %}"><img src="{{ p.header_image.url }}" alt="..." width="250px" height="250px"></a>
                 </div>
                 {% endif %}
                 <div class='content-text'>
-                    <a href="{% url 'post_url' p.slug %}"><p class="title">{{ p.title }}</p></a>
+                    <a href="{% url 'app:post_url' p.slug %}"><p class="title">{{ p.title }}</p></a>
                     <p class="description">{{ p.body }}</p>
                     <div class="pre-last-data">
                         <div class="last-data">

@@ -16,17 +16,17 @@
                     height="60px"></a></li>
             </ul>
             <ul class='first-ul'>
-                <li class='direct'><a href="{% url 'home_page' %}">Главная страница</a></li>
+                <li class='direct'><a href="{% url 'app:home_page' %}">Главная страница</a></li>
                 <li class='direct'><a href="#">Завершенные задачи</a></li>
-                <li><a href="{% url 'add_post' %}">Создать задачу</a></li>
+                <li><a href="{% url 'app:add_post' %}">Создать задачу</a></li>
             </ul>
             {% if not user.is_authenticated %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="{% url 'login_url' %}">Войти</a></li>
+                <li><a class='last-link' href="{% url 'users:login_url' %}">Войти</a></li>
             </ul>
             {% else %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="{% url 'profile_url' customuser.slug %}">{{ user.username }}</a></li>
+                <li><a class='last-link' href="{% url 'users:profile_url' customuser.slug %}">{{ user.username }}</a></li>
             </ul>
             {% endif %}
         </nav>
@@ -47,16 +47,17 @@
                 <p class="date_j">Дата обновления:{{ post.date_update }}</p>
                 <p class="date_b">Автор: {{ post.author }}</p>
                 <br>
-                <a href="{% url 'update_post_url' post.slug %}">Редактировать</a>
-                <a href="{% url 'delete_post_url' post.slug %}">Удалить</a>
-                <form action='{% url "like_post_url" post.slug %}' method='post'>
+                <a href="{% url 'app:update_post_url' post.slug %}">Редактировать</a>
+                <a href="{% url 'app:delete_post_url' post.slug %}">Удалить</a>
+                <form action='{% url "app:like_post_url" post.slug %}' method='post'>
                     {% csrf_token %}
                     <button type='submit'>Лайк {{ post.like.count }}</button>
                 </form>
+                {% comment %} <a href='{% url "delete_comment_url" post.slug comment.id %}'>Удалить</a> {% endcomment %}
             </div>
             
         </div>
-        <form action='{% url "post_url" post.slug %}' method='post'>
+        <form action='{% url "app:post_url" post.slug %}' method='post'>
             {% csrf_token %}
             <p><label id='{{ form.body.id_for_label }}'></label>{{ form.body }}</p>
             <button type='submit'>Отправить</button>
@@ -69,6 +70,10 @@
                 <p>Автор {{ c.author }}</p>
                 <p>{{ c.body }}</p>
                 <p>{{ c.date_create }}</p>
+                <form action='{% url "app:like_comment_url" post.slug c.id %}'>
+                    {% csrf_token %}
+                    <button type='submit'>Лайк {{ c.like.count }}</button>
+                </form>
                 <hr>
                 {% endfor %}
             {% endif %}

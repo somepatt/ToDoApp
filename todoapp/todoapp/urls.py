@@ -24,8 +24,8 @@ from users.urls import url_users_pattern
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(url_app_pattern)),
-    path('user/', include(url_users_pattern)),
+    path('', include((url_app_pattern, 'app'), namespace='app')),
+    path('user/', include((url_users_pattern, 'users'), namespace='users')),
 ]
 
 if settings.DEBUG is True:

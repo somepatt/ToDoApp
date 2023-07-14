@@ -16,13 +16,13 @@
                     height="60px"></a></li>
             </ul>
             <ul class='first-ul'>
-                <li class='direct'><a href="{% url 'home_page' %}">Главная страница</a></li>
+                <li class='direct'><a href="{% url 'app:home_page' %}">Главная страница</a></li>
                 <li class='direct'><a href="#">Завершенные задачи</a></li>
-                <li><a href="{% url 'add_post' %}">Создать задачу</a></li>
+                <li><a href="{% url 'app:add_post' %}">Создать задачу</a></li>
             </ul>
             {% if not user.is_authenticated %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="#">Войти</a></li>
+                <li><a class='last-link' href="{% url 'users:login_url' %}">Войти</a></li>
             </ul>
             {% else %}
             <ul class='second-ul'>
@@ -51,7 +51,7 @@
                 {% if customuser.date_b %}
                     <p class="date_b">{{ customuser.date_b }}</p>
                 {% endif %}
-                <a href="{% url 'update_profile_url' customuser.slug %}">Редактировать профиль</a>
+                <a href="{% url 'users:update_profile_url' customuser.slug %}">Редактировать профиль</a>
             </div>
         </div>
     </div>
