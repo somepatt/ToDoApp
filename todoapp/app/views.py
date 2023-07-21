@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
+from .alghoritms import *
 from .forms import *
 from .models import *
 # Create your views here.
@@ -17,7 +19,6 @@ class HomePage(LoginRequiredMixin, ListView):
         context["customuser"] = self.request.user
         return context
     
-
     def get_queryset(self):
         return Post.objects.filter(is_published=True)
 
@@ -96,3 +97,13 @@ def LikeCommentView(request, post_slug, comment_id):
         comment.like.add(request.user)
     return redirect('app:post_url', post_slug)
 
+
+def SearchForm(request):
+    search_query = request.GET.get('q')
+    if search_query:
+        # items = Post.objects.filter(Q(body__icontains=search_query) | Q(title__icontains=search_query))
+        items = Post.objects.values_list('title', flat=True)
+        result = tolerant_search(search_query, items)
+        posts = Post.objects.filter(title__in=[res[0] for res in result])
+        return render(request, 'search_result.html', {'posts': posts, 'query': search_query, 'customuser': request.user})
+    return render(request, 'search_result.html', {'customuser': request.user})
