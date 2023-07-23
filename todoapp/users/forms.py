@@ -25,7 +25,7 @@ class UpdateUserForm(UserChangeForm):
     username = forms.CharField(label='Никнейм')
     bio = forms.Textarea()
     email = forms.EmailField(label='Почта')
-    date_b = forms.DateInput()
+    date_b = forms.CharField(widget=forms.DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = CustomUser

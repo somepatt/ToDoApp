@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавление поста</title>
+    <title>Изменение поста</title>
     <link rel="stylesheet" href="{% static 'app/css/home_page.css' %}">
     <link rel="stylesheet" href="{% static 'app/fonts/font.css' %}">
 </head>
@@ -27,19 +27,19 @@
             </ul>
             {% else %}
             <ul class='second-ul'>
-                <li><a class='last-link' href="#">{{ user.username }}</a></li>
+                <li><a class='last-link' href="{% url 'users:profile_url' user.slug %}">{{ user.username }}</a></li>
             </ul>
             {% endif %}
         </nav>
         <div class="div-form">
-            <form action="{% url 'app:add_post' %}"  method='post' enctype='multipart/form-data'>
+            <form action="{% url 'app:update_post_url' post.slug %}"  method='post' enctype='multipart/form-data'>
                 {% csrf_token %}
                 {{ form.non_field_errors }}
-
                 {% for f in form %}
                 <p><label id='{{ f.id_for_label }}'>{{ f.label }}</label><br>{{ f }}</p>
+                <p>{{ f.errors }}</p>
                 {% endfor %}
-                <button type='submit'>Создать</button>
+                <button type='submit'>Сохранить</button>
             </form>
         </div>
     </div>

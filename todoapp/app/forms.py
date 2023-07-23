@@ -18,3 +18,8 @@ class AddCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('body', )
+
+class ChangePostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('header_image', 'title', 'body', 'is_published')

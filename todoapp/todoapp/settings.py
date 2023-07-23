@@ -147,3 +147,4 @@ INTERNAL_IPS = [
 GOOGLE_FONTS = ["Kablammo", "Roboto"]
 
 LOGIN_REDIRECT_URL = 'app:home_page'
+LOGOUT_REDIRECT_URL = 'app:home_page'

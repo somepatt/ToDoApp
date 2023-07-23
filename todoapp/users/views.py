@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from app.models import *
 from .forms import *
 # Create your views here.
 class RegisterUserView(CreateView):
@@ -25,6 +26,8 @@ class LoginUser(LoginView):
     template_name = 'login_user.html'
     success_url = reverse_lazy('app:home_page')         #поменять на профиль
 
+class LogoutUser(LogoutView):
+    success_url = reverse_lazy('app:home_page')
 
 class UpdateProfile(LoginRequiredMixin, UpdateView):
     form_class = UpdateUserForm
@@ -45,7 +48,6 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
         return context
     
     def put(self, request, user_slug):
-        print('put')
         form = UpdateUserForm(request.PUT, request.FILES)
         if form.is_valid():
             form.save()
@@ -67,3 +69,10 @@ class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'profile_page.html'
     context_object_name = 'customuser'
     slug_url_kwarg = 'user_slug'
+    login_url = reverse_lazy('users:login_url')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["posts"] = Post.objects.filter(author=kwargs['object'].id)
+        return context
+    

@@ -1,3 +1,5 @@
+from typing import Any, Optional
+from django.db import models
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, TemplateView, DeleteView
@@ -75,10 +77,14 @@ class AddPost(LoginRequiredMixin, CreateView):
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
-    template_name = 'delete_post.html'
-    success_url = reverse_lazy('home_page')
+    success_url = reverse_lazy('app:home_page')
     slug_url_kwarg = 'post_slug'
     login_url = reverse_lazy('users:login_url')
+
+    def post(self, request, *args, **kwargs):
+        post = Post.objects.get(slug=kwargs['post_slug'])
+        post.delete()
+        return redirect('app:home_page')
 
 
 def LikeView(request, post_slug):
@@ -104,6 +110,34 @@ def SearchForm(request):
         # items = Post.objects.filter(Q(body__icontains=search_query) | Q(title__icontains=search_query))
         items = Post.objects.values_list('title', flat=True)
         result = tolerant_search(search_query, items)
-        posts = Post.objects.filter(title__in=[res[0] for res in result])
+        posts = Post.objects.filter(Q(title__in=[res[0] for res in result]) | Q(body__in=[res[0] for res in result]))
         return render(request, 'search_result.html', {'posts': posts, 'query': search_query, 'customuser': request.user})
     return render(request, 'search_result.html', {'customuser': request.user})
+
+
+class ChangePostView(LoginRequiredMixin, UpdateView):
+    form_class = ChangePostForm
+    template_name = 'change_post.html'
+    login_url = reverse_lazy('users:login_url')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["customuser"] = self.request.user
+        return context
+
+    def put(self, request, post_slug):
+        print('пут')
+        form = ChangePostForm(request.PUT, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('app:post_url', post_slug)
+
+    def get_object(self):
+        obj = get_object_or_404(Post, slug=self.kwargs.get('post_slug'))
+        return obj
+    
+
+def DeleteComment(request, post_slug, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    comment.delete()
+    return redirect('app:post_url', post_slug)

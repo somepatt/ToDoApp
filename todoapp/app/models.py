@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 from autoslug import AutoSlugField
 
@@ -19,6 +20,12 @@ class Post(models.Model):
     date_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField()
     slug = AutoSlugField(populate_from='title', unique=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("app:post_url", kwargs={"post_slug": self.slug})
 
 
 class Feedback(models.Model):

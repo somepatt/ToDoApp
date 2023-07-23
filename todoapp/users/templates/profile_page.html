@@ -12,12 +12,13 @@
     <div class="container">
         <nav class="navbar">
             <ul class='third-ul'>
-                <li><a class='last-link' href="#"><img src="{% static 'app/images/logo.jpg' %}" alt="..." width="60px"
+                <li><a class='last-link' href="{% url 'app:home_page' %}"><img src="{% static 'app/images/logo.jpg' %}" alt="..." width="60px"
                     height="60px"></a></li>
             </ul>
             <ul class='first-ul'>
                 <li class='direct'><a href="{% url 'app:home_page' %}">Главная страница</a></li>
-                <li class='direct'><a href="#">Завершенные задачи</a></li>
+                <li class='direct'><a href="#">О нас</a></li>
+                <li class='direct'><a href="#">Помощь</a></li>
                 <li><a href="{% url 'app:add_post' %}">Создать задачу</a></li>
             </ul>
             {% if not user.is_authenticated %}
@@ -49,11 +50,19 @@
                 {% endif %}
                 <p class="date_j">{{ customuser.date_joined }}</p>
                 {% if customuser.date_b %}
-                    <p class="date_b">{{ customuser.date_b }}</p>
+                    <p class="date_b">Дата рождения: {{ customuser.date_b }}</p></br>
                 {% endif %}
                 <a href="{% url 'users:update_profile_url' customuser.slug %}">Редактировать профиль</a>
+                <form action="{% url 'users:logout_url' %}" method='post'>
+                    {% csrf_token %}
+                    <button type='submit'>Выйти</button>
+                </form>
             </div>
         </div>
+        <h2>Посты пользователя:</h2>
+            {% for p in posts %}
+            <a href='{% url "app:post_url" p.slug %}'>{{ p.title }}</br></br></a>
+            {% endfor %}
     </div>
 </body>
 </html>

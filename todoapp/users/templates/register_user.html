@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='{% static "users/css/login.css" %}'>
+    <link rel="stylesheet" href="{% static 'users/fonts/font.css' %}">
+    <title>Регистрация</title>
+</head>
+<body>
+    <div class="container">
+        <form action="{% url 'users:register_url' %}" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for f in form %}
+            <p><label id='{{ f.id_for_label }}'>{{ f.label }}</label><br>{{ f }}</p>
+            <p>{{ f.errors }}</p>
+            {% endfor %}
+            <button type='submit'>Регистрация</button>
+        </form>
+    </div>
+</body>
+</html>
