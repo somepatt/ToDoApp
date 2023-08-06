@@ -1,9 +1,9 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 from autoslug import AutoSlugField
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.urls import reverse
 
-# Create your models here.
+
 class CustomUser(AbstractUser):
     bio = models.TextField(max_length=255, null=True, blank=True)
     date_b = models.DateField(null=True, blank=True)
@@ -12,7 +12,6 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
     def get_absolute_url(self):
         return reverse("profile_url", kwargs={"user_slug": self.slug})
-    
